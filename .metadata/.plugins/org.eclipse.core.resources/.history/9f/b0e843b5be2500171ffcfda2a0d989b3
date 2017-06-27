@@ -1,0 +1,5 @@
+package com.java.webservices.messenger.resources;
+
+public class CommentsResource {
+
+}

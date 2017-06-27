@@ -1,0 +1,82 @@
+package com.java.webservices.messenger.resources;
+
+import java.util.List;
+
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import com.java.webservices.messenger.model.Message;
+import com.java.webservices.messenger.resources.beans.MessageFilterBean;
+import com.java.webservices.messenger.service.MessageService;
+
+@Path("messages")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class MessagesResource {
+
+	MessageService ms = new MessageService();
+
+	/*
+	 * @GET // @Produces(MediaType.APPLICATION_XML)
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON) public List<Message> getMessages()
+	 * { return ms.getAllMessages(); }
+	 */
+	@GET
+	// @Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
+	/*public List<Message> getMessages(@QueryParam("year") int year, @QueryParam("start") int start,
+			@QueryParam("size") int size) {*/
+	public List<Message> getMessages(@BeanParam MessageFilterBean bean) {
+		if (bean.getYear() > 0) {
+			return ms.getAllMessagesForYear(bean.getYear());
+		}
+		if(bean.getStart()>=0 && bean.getSize()>=0){
+			return ms.getAllMessagesPaginated(bean.getStart(), bean.getSize());
+		}
+		return ms.getAllMessages();
+	}
+
+	@GET
+	@Path("{messageId}")
+	// @Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Message getMessage(@PathParam("messageId") long messageId) {
+		return ms.getMessage(messageId);
+
+	}
+
+	@POST
+	public Message addMessage(Message message) {
+		return ms.addMessage(message);
+
+	}
+
+	@PUT
+	@Path("{messageId}")
+	public Message updateMessage(@PathParam("messageId") long id, Message message) {
+		message.setId(id);
+		return ms.updateMessage(message);
+	}
+
+	@DELETE
+	@Path("{messageId}")
+	public Message deleteMessage(@PathParam("messageId") long id) {
+		return ms.removeMessage(id);
+	}
+	
+	@GET
+	@Path("/{messageId}/comments")
+	public String test(){
+		return "test";
+	}
+}

@@ -1,0 +1,8 @@
+cxfRuntimeLocations=D\:\\apache-cxf-3.1.11
+cxfRuntimeTypes=Apache CXF
+cxfRuntimeVersions=3.1.11
+cxfUseSpringAppContext=false
+defaultRuntimeLocation=D\:\\apache-cxf-3.1.11
+defaultRuntimeType=Apache CXF
+defaultRuntimeVersion=3.1.11
+eclipse.preferences.version=1
